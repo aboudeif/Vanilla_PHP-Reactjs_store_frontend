@@ -4,6 +4,7 @@ import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link } from 'react-router-dom'
 
 const ProductList = ({ products }) => {
+
   return (
     <div>
       <header className='d-flex flex-row justify-content-between align-items-center'>
@@ -12,32 +13,21 @@ const ProductList = ({ products }) => {
         <Link key={"add-products"} to={"/add-product"} className="mx-1 btn btn-light p-1">
         ADD
         </Link>
-        <button className='mx-1 btn btn-danger p-1'>MASS DELETE</button>
+        <button className='mx-1 btn btn-danger p-1' id='delete-product-btn'>MASS DELETE</button>
         </div>
       </header>
       <hr />
       <main className='d-flex flex-row justify-content-start align-items-center flex-wrap'>
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      <Product />
-      {products?.length > 0 ? (
-        products.map((product) => (
-          <Product key={product.id} product={product} />
-        ))
-      ) : (
-        <div></div>
-      )}
+      
+      {products?.length > 0 ?
+        products.map(product => 
+          <Product key={product.sku} { ...product } />
+        )
+       : 
+        <div>
+          {/* <Product { ...Product } /> */}
+        </div>
+      }
       </main>
     </div>
   )
