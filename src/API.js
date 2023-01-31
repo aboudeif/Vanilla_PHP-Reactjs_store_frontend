@@ -1,6 +1,6 @@
 import { json } from "react-router-dom";
 
-const api = "https://abdallah-aboudeif.000webhostapp.com/";
+const api = "https://abdallah-aboudeif.000webhostapp.com";
 
 let token = localStorage.token;
 
