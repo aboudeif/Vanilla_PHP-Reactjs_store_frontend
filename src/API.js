@@ -1,3 +1,5 @@
+import { json } from "react-router-dom";
+
 const api = "http://localhost:8080/php-test";
 
 let token = localStorage.token;
@@ -10,22 +12,22 @@ const headers = {
 };
 
 export const add = (product) =>
-  fetch(`${api}/api/new`, { 
+  fetch(`${api}/api/new`, {
     method: 'POST',
-    body: JSON.stringify(product),
-    headers })
-    .then((res) => res.json());
+    mode: 'no-cors',
+    body: product,
+     })
+     .then((res) => res)
 
-export const remove = (sku) =>
+export const remove = (skus) =>
   fetch(`${api}/api/delete`, { 
     method: 'POST',
-    body: JSON.stringify({'sku' : sku }),
-    headers })
-    .then((res) => res.json());
+    mode: 'no-cors',
+    body: JSON.stringify(skus),
+     })
 
-    export const getAll = () =>
-    fetch(`${api}/`, { headers })
-      .then((res) => res.json())
-      .then((data) => data);
-  
 
+  export const getAll = () =>
+  fetch(`${api}/`, { headers })
+    .then((res) => res.json())
+    .then((data) =>Object.keys(data).map((key) =>  data[key]))

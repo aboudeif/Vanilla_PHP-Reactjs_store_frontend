@@ -2,8 +2,29 @@ import React from 'react'
 import Product from './Product'
 import 'bootstrap/dist/css/bootstrap.min.css'
 import { Link } from 'react-router-dom'
+import { remove } from '../API'
 
-const ProductList = ({ products }) => {
+const ProductList = ({ products, handleProducts }) => {
+
+  let deleteList = [];
+
+  const handleDelete = (status, sku) => {
+    console.log(sku,' ',status)
+    
+    if(status) {
+      deleteList  = [...deleteList, sku]
+    } else {
+      deleteList = deleteList.filter(item => item !== sku)
+    }
+    console.log('deleteList: ', deleteList)
+  }
+
+  const handleDeleteExecution = () => {
+
+    handleProducts(deleteList)
+    remove(deleteList)
+    .then(deleteList = [])
+    }
 
   return (
     <div>
@@ -13,7 +34,7 @@ const ProductList = ({ products }) => {
         <Link key={"add-products"} to={"/add-product"} className="mx-1 btn btn-light p-1">
         ADD
         </Link>
-        <button className='mx-1 btn btn-danger p-1' id='delete-product-btn'>MASS DELETE</button>
+        <button className='mx-1 btn btn-danger p-1 delete-checkbox' id='delete-product-btn' onClick={handleDeleteExecution}>MASS DELETE</button>
         </div>
       </header>
       <hr />
@@ -21,11 +42,11 @@ const ProductList = ({ products }) => {
       
       {products?.length > 0 ?
         products.map(product => 
-          <Product key={product.sku} { ...product } />
+          <Product key={product.sku} { ...product } handleDelete={handleDelete} />
         )
        : 
         <div>
-          {/* <Product { ...Product } /> */}
+      
         </div>
       }
       </main>

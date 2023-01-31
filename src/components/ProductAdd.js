@@ -1,60 +1,59 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import ValidationMessage from "./ValidationMessage";
+import { Link, redirect } from "react-router-dom";
+import { add } from "../API";
 
 const ProductAdd = () => {
-  const type_options = [
-    { DVD: ["Size (MB)"] },
-    { Book: ["Weight (KG)"] },
-    { Furniture: ["Height (CM)", "Width (CM)", "Length (CM)"] },
-  ];
+  const type_options = {
+    DVD: ["Size (MB)"],
+    Book: ["Weight (KG)"],
+    Furniture: ["Height (CM)", "Width (CM)", "Length (CM)"],
+  };
 
   const [type, setType] = useState(null);
 
   const handleTypeSwitch = (e) => {
-    setType(type_options[e.target.selectedIndex]);
-  };
-  
-  const patterns = {
-    'sku': /(?:[a-z]+-){2}[a-z]+/i,
-    'name' : /^[a-z ]+$/i
+    const type_option = e.target.value;
+    setType(type_options[type_option]);
   };
 
-  // const validationmessage = <ValidationMessage message='Please, provide the data of indicated type'></ValidationMessage>
-  const mismatchMessage = <ValidationMessage message='Please, submit required data'></ValidationMessage>
+  const patterns = {
+    sku: /(?:[a-z]+-){2}[a-z]+$/i,
+    name: /^[a-z ]+$/i,
+    price: /([0-9]*[.])?[0-9]+/,
+    size: /([0-9]*[.])?[0-9]+/,
+    weight: /([0-9]*[.])?[0-9]+/,
+    height: /([0-9]*[.])?[0-9]+/,
+    length: /([0-9]*[.])?[0-9]+/,
+
+  };
 
   const handlePatternValidation = (e) => {
-    e.target.style.textDecoration = e.target.value.match(patterns[e.target.id]) ?  'none' : 'underline dotted red';
-    e.target.value.match(patterns[e.target.id]) ?
-    document.querySelector('#notifications').innerHTML = '' :
-    document.querySelector('#notifications').innerHTML = 'Please, provide the data of indicated type';
+    e.target.style.textDecoration = e.target.value.match(patterns[e.target.id])
+      ? "none"
+      : "underline dotted red";
+    e.target.value.match(patterns[e.target.id])
+      ? (document.querySelector("#notifications").innerHTML = "")
+      : (document.querySelector("#notifications").innerHTML =
+          "Please, provide the data of indicated type");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    
     const form = e.target;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
-    console.log(data);
     if (Object.values(data).every((value) => value !== '')) {
-      fetch("http://localhost:8000/api/products", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(data),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          console.log("Success:", data);
-        })
-        .catch((error) => {
-          console.error("Error:", error);
-        });
-    } else {
-      document.querySelector('#notifications').innerHTML = mismatchMessage;
+    add(formData)
+    // then go to home page
+    .then(window.location.replace("/"))
+    }
+    else {
+      document.querySelector("#notifications").innerHTML =
+          "Please, submit required data"
     }
   };
+  
 
   return (
     <div>
@@ -74,9 +73,17 @@ const ProductAdd = () => {
       </header>
       <hr />
 
-      <form action="" id="product_form" className="container" onSubmit={handleSubmit}>
+      <form
+        action=""
+        id="product_form"
+        className="container"
+        onSubmit={handleSubmit}
+      >
         <div className="row">
-          <span id="notifications" className="col badge text-bg-warning mb-4 form-text"></span>
+          <span
+            id="notifications"
+            className="col badge text-bg-warning mb-4 form-text"
+          ></span>
         </div>
         <div className="row text-left">
           <label htmlFor="sku" className="col-3 my-2 text-start">
@@ -87,11 +94,10 @@ const ProductAdd = () => {
             name="sku"
             id="sku"
             className="col-4 my-2 border form-control-sm"
-            required
+            // required
             form="product_form"
-            onChange={handlePatternValidation}
+            onInput={handlePatternValidation}
           />
-          
         </div>
 
         <div className="row">
@@ -103,9 +109,9 @@ const ProductAdd = () => {
             name="name"
             id="name"
             className="col-4 my-2 border form-control-sm"
-            required
+            // required
             form="product_form"
-            onChange={handlePatternValidation}
+            onInput={handlePatternValidation}
           />
         </div>
 
@@ -115,11 +121,14 @@ const ProductAdd = () => {
           </label>
           <input
             type="number"
+            min='1.00'
+            step='0.01'
             name="price"
             id="price"
             className="col-4 my-2 border form-control-sm"
-            required
+            // required
             form="product_form"
+            onInput={handlePatternValidation}
           />
         </div>
 
@@ -132,16 +141,16 @@ const ProductAdd = () => {
             Type Switcher
           </label>
           <select
-            name="type-switcher"
+            name="type"
             id="type-switcher"
-            defaultValue="none"
+            defaultValue=""
             className="col-4 my-2 border form-control-sm"
-            onChange={handleTypeSwitch}
+            onInput={handleTypeSwitch}
             form="product_form"
             aria-describedby="type-switcher-help"
             required
           >
-            <option value="none" disabled>
+            <option value="" disabled hidden>
               Type Switcher
             </option>
             <option value="DVD" id="DVD">
@@ -155,18 +164,18 @@ const ProductAdd = () => {
             </option>
           </select>
           {type && (
-            <small className="col-8 mb-4 text-start form-text text-muted" id="type-switcher-help">
+            <small
+              className="col-8 mb-4 text-start form-text text-muted"
+              id="type-switcher-help"
+            >
               Please, provide{" "}
-              {type[Object.keys(type)[0]]
-                .map((v) => v.split(" ")[0].toLowerCase())
-                .join(", ")}{" "}
-              
+              {type.map((v) => v.split(" ")[0].toLowerCase()).join(", ")}{" "}
             </small>
           )}
         </div>
 
         {type &&
-          type[Object.keys(type)[0]].map((v) => (
+          type.map((v) => (
             <div className="row" key={v.split(" ")[0]}>
               <label
                 htmlFor={v.split(" ")[0].toLowerCase()}
@@ -176,11 +185,14 @@ const ProductAdd = () => {
               </label>
               <input
                 type="number"
+                min='1.00'
+                step='0.01'
                 name={v.split(" ")[0].toLowerCase()}
                 id={v.split(" ")[0].toLowerCase()}
                 className="col-4 my-2 border form-control-sm"
-                required
+                // required
                 form="product_form"
+                onInput={handlePatternValidation}
               />
             </div>
           ))}
