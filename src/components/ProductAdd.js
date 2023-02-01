@@ -46,7 +46,13 @@ const ProductAdd = () => {
     if (Object.values(data).every((value) => value !== '')) {
     add(formData)
     // then go to home page
-    .then(window.location.replace("/"))
+    .then((res) => {
+      if(res === data['sku'])
+      window.location.replace("/")
+      else {
+        document.querySelector("#notifications").innerHTML = res
+      }
+    })
     }
     else {
       document.querySelector("#notifications").innerHTML =
