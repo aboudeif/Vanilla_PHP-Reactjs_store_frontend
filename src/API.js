@@ -15,6 +15,7 @@ export const add = (product) =>
      })
      .then((res) => res.json())
      .then((res) => res.message)
+     .then((message) => console.log(message))
 
 export const remove = (skus) =>
   fetch(`${api}/delete.php`, { 
