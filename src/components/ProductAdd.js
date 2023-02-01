@@ -45,13 +45,13 @@ const ProductAdd = () => {
     const data = Object.fromEntries(formData);
     if (Object.values(data).every((value) => value !== '')) {
     add(formData)
-    // then go to home page
+    // then return home page
     .then((res) => {
-      if(JSON.stringify(res.message) === data['sku'])
+      if(res === data['sku'])
       window.location.replace("/")
-      else {
-        document.querySelector("#notifications").innerHTML = JSON.stringify(res.message)
-      }
+      else 
+        document.querySelector("#notifications").innerHTML = res
+      
     })
     }
     else {
