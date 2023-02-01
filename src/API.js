@@ -11,11 +11,9 @@ export const add = (product) =>
     method: 'POST',
     mode: 'no-cors',
     headers,
-    body: product,
+    body: product
      })
-     .then((res) => res.json())
-     .then((res) => res.message)
-     .then((message) => console.log(message))
+     .then((res) => res)
 
 export const remove = (skus) =>
   fetch(`${api}/delete.php`, { 

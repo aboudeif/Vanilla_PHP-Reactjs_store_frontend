@@ -51,6 +51,7 @@ const ProductAdd = () => {
       window.location.replace("/")
       else 
         document.querySelector("#notifications").innerHTML = res
+    
       
     })
     }
