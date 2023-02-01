@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link, redirect } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { add } from "../API";
 
 const ProductAdd = () => {
@@ -45,14 +45,12 @@ const ProductAdd = () => {
     const data = Object.fromEntries(formData);
     if (Object.values(data).every((value) => value !== '')) {
     add(formData)
-    // then return home page
-    .then((res) => {
-      if(res === data['sku'])
-      window.location.replace("/")
+    .then((message) => {
+      if(message === data['sku']){
+        window.location.replace("/")}
       else 
-        document.querySelector("#notifications").innerHTML = res
-    
-      
+        document.querySelector("#notifications").innerHTML = message
+        console.log(message)
     })
     }
     else {
