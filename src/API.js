@@ -14,8 +14,7 @@ export const add = (product) =>
     body: product,
      })
      .then((res) => res.json())
-     .then((res) => Object.keys(res).map((key) =>  res[key]))
-     .then((res) => res['message'])
+     .then((res) => res.message)
 
 export const remove = (skus) =>
   fetch(`${api}/delete.php`, { 
