@@ -47,10 +47,10 @@ const ProductAdd = () => {
     add(formData)
     // then go to home page
     .then((res) => {
-      if(res === data['sku'])
+      if(JSON.stringify(res.message) === data['sku'])
       window.location.replace("/")
       else {
-        document.querySelector("#notifications").innerHTML = res
+        document.querySelector("#notifications").innerHTML = JSON.stringify(res.message)
       }
     })
     }
