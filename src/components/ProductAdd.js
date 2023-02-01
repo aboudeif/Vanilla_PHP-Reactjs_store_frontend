@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { Link } from "react-router-dom";
 import { add } from "../API";
 
-const ProductAdd = () => {
+const ProductAdd = ({ products }) => {
   const type_options = {
     DVD: ["Size (MB)"],
     Book: ["Weight (KG)"],
@@ -39,23 +39,21 @@ const ProductAdd = () => {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
     const form = e.target;
     const formData = new FormData(form);
     const data = Object.fromEntries(formData);
     if (Object.values(data).every((value) => value !== '')) {
-    add(formData)
-    .then((message) => {
-      if(message === data['sku']){
-        window.location.replace("/")}
-      else 
-        document.querySelector("#notifications").innerHTML = message
-        console.log(message)
-    })
-    }
-    else {
+      if(Object.values(data).every((value) => value.match(patterns[value]))) {
+        if(products.includes(data.sku))
+          document.querySelector("#notifications").innerHTML = "A product with provided sku is already exist, please provide another one"
+        else
+          add(formData)
+      }
+      else
+        document.querySelector("#notifications").innerHTML = "Please, provide the data of indicated type"
+    } else {
       document.querySelector("#notifications").innerHTML =
-          "Please, submit required data"
+        "Please, submit required data";
     }
   };
   

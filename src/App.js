@@ -33,7 +33,7 @@ function App() {
         element={
           <div className='m-5'>
             <div className='m-5 d-flex flex-column justify-content-between' style={{height: 'calc(90vh)'}}>
-              <ProductAdd />
+              <ProductAdd products={[...products]} />
               <Footer />
             </div>
           </div>

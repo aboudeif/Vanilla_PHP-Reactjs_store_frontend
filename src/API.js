@@ -12,7 +12,6 @@ export const add = (product) =>
     headers,
     body: product
      })
-     .then((res) => res)
 
 export const remove = (skus) =>
   fetch(`${api}/delete.php`, { 
