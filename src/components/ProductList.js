@@ -9,14 +9,12 @@ const ProductList = ({ products, handleProducts }) => {
   let deleteList = [];
 
   const handleDelete = (status, sku) => {
-    console.log(sku,' ',status)
     
     if(status) {
       deleteList  = [...deleteList, sku]
     } else {
       deleteList = deleteList.filter(item => item !== sku)
     }
-    console.log('deleteList: ', deleteList)
   }
 
   const handleDeleteExecution = () => {
