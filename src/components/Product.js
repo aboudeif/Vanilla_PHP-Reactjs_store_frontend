@@ -1,6 +1,6 @@
 import React from "react";
 
-const Product = ({ sku, name, price, type, handleDelete }) => {
+const Product = ({ sku, name, price, type, size, weight, hieght, width, length, handleDelete }) => {
 const handleInput = (e) => handleDelete(e.target.checked, sku)
 
   return (
@@ -16,9 +16,13 @@ const handleInput = (e) => handleDelete(e.target.checked, sku)
           <br />
           {name}
           <br />
-          {price}
+          {price} $
           <br />
           {type}
+          <br />
+          {size? "Size: " + size + " MB" : null}
+          {weight? "Weight: " + weight + "KG" : null}
+          {length? "Dimension: " + hieght + "x" + width + "x" + length : null}
         </div>
         
       </div>

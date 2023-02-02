@@ -6,7 +6,7 @@ const ProductAdd = ({ products }) => {
   const type_options = {
     DVD: ["Size (MB)"],
     Book: ["Weight (KG)"],
-    Furniture: ["Height (CM)", "Width (CM)", "Length (CM)"],
+    Furniture: ["Hieght (CM)", "Width (CM)", "Length (CM)"],
   };
 
   const [type, setType] = useState(null);
