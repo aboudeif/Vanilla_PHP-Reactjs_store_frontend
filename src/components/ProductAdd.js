@@ -44,10 +44,11 @@ const ProductAdd = ({ products }) => {
     const data = Object.fromEntries(formData);
     if (Object.values(data).every((value) => value !== '')) {
       if(Object.values(data).every((value) => value.match(patterns[value]))) {
-        if(products.includes(data.sku))
+        if((products.filter((item) => item.sku === data.sku).length > 0))
           document.querySelector("#notifications").innerHTML = "A product with provided sku is already exist, please provide another one"
         else
           add(formData)
+          .then(window.location.href = "/")
       }
       else
         document.querySelector("#notifications").innerHTML = "Please, provide the data of indicated type"
