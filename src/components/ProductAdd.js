@@ -138,15 +138,14 @@ const ProductAdd = ({ products }) => {
 
         <div className="row">
           <label
-            htmlFor="type-switcher"
-            id="productType"
+            htmlFor="productType"
             className="col-3 my-2 text-start"
           >
             Type Switcher
           </label>
           <select
             name="type"
-            id="type-switcher"
+            id="productType"
             defaultValue=""
             className="col-4 my-2 border form-control-sm"
             onInput={handleTypeSwitch}
