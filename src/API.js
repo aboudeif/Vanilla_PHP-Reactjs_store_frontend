@@ -6,7 +6,7 @@ const headers = {
 };
 
 export const add = (product) =>
-  fetch(`${api}/new.php`, {
+  fetch(`${api}/new`, {
     method: 'POST',
     mode: 'no-cors',
     headers,
@@ -14,7 +14,7 @@ export const add = (product) =>
      })
 
 export const remove = (skus) =>
-  fetch(`${api}/delete.php`, { 
+  fetch(`${api}/delete`, { 
     method: 'POST',
     mode: 'no-cors',
     body: JSON.stringify(skus),
